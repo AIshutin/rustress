@@ -1,0 +1,6 @@
+requests
+bs4
+pymorphy2
+tensorflow
+keras
+fake-useragents
