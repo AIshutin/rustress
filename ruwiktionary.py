@@ -425,18 +425,30 @@ if __name__ == "__main__":
                 if len(word) != 0:
                     words.add(word.lower())
                     word = ""
+        last = len(db)
         for word in words:
-            print("word:", word, flush=True)
-            print(word, db.get_stress(morph.parse(word)[0]))
-            if len(db) % 300 == 0:
-                print(len(db))
-                print("SAVED")
-                db.save("db-stress-" + str(len(db)) + ".txt")
-                db.save("stressdb.json")
+            try:
+                print("word:", word, flush=True)
+                print(word, db.get_stress(morph.parse(word)[0]))
+                if (len(db) - last) % 300 == 0 and len(db) != last:
+                    print(len(db))
+                    print("SAVED")
+                    db.save("db-stress-" + str(len(db)) + ".txt")
+                    db.save("stressdb.json")
+                    db = StressDB('stressdb.json')
+                    last = len(db)
+                    sleep(60)
+                    print("COMPLEATED")
+                    #break
+            except Exception as exp:
+                print("!!!!!!!!!!!!!!!!!!!!!!")
+                print(exp)
+                print()
+                print()
                 db = StressDB('stressdb.json')
-                sleep(60)
-                print("COMPLEATED")
-                #break
+                last = len(db)
+                sleep(180)
+                print("continued")
     
     '''while True:
         word = input()
