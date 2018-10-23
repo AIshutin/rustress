@@ -11,6 +11,7 @@ import json
 import random as rd
 from time import sleep
 from fake_useragent import UserAgent
+import os
 
 
 stress_char = "ре́с"[2]
@@ -315,11 +316,12 @@ def get_stress(word):
         if normal[-1] in endings:
             normal = normal[:-1]
         normal += 'ный'
-    print(normal, word.tag)
+    print(normal, word.tag, flush=True)
     #try:
-    print("SENT")
+    print("SENT", flush=True)
     resp = proxy.get(url + normal)
-    print("GOT")
+    print("GOT", flush=True)
+    print(resp.status_code, flush=True)
     #except:
     #    raise Exception("Timeout")
     if (resp.status_code != 200):
@@ -332,17 +334,25 @@ class StressDB:
     articles = dict()
 
     def load(self, filename):
-        try:
-            with open(filename, encoding='utf-8') as file:
-                self.articles = json.loads(file.read())
-                for el in self.articles:
+        with open(filename, encoding='utf-8') as file:
+            articles = json.loads(file.read())
+            #print(articles)
+            self.articles = dict()
+            for obj in articles:
+                #print("objhashes:", obj)
+                self.articles[obj] = dict()
+                for el in articles[obj]:
+                    #print(el)
                     if el == 'ADVB':
+                        self.articles[obj][el] = articles[obj][el]
                         continue
-                    for i in range(len(self.articles[el])):
-                        self.articles[el][i] = bs4.BeautifulSoup(self.articles[el][i], 'html.parser')
-                print(self.articles)
-        except:
-            pass
+                    #print(type(articles[obj]), len(articles[obj]))
+                    #print(articles[obj])
+                    #print(articles[obj][el])
+                    self.articles[obj][el] = []
+                    for i in range(len(articles[obj][el])):
+                        self.articles[obj][el].append(bs4.BeautifulSoup(articles[obj][el][i], 'html.parser'))
+            #print(self.articles)
 
     def __init__(self, source=None):
         self.articles = dict()
@@ -354,15 +364,19 @@ class StressDB:
         for word in self.articles:
             if self.articles[word] is None:
                 continue
+            jsonify[word] = dict()
             for tag in self.articles[word]:
                 if tag == 'ADVB':
-                    jsonify[tag] = self.articles[word][tag]
+                    jsonify[word][tag] = self.articles[word][tag]
                     continue
 
                 arr = []
+                #print(type(word), type(tag))
+                #print(tag)
                 for el in self.articles[word][tag]:
                     arr.append(str(el))
-                jsonify[tag] = arr
+                jsonify[word][tag] = arr
+        #print(jsonify)
 
         with open(filename, 'w') as file:
             print(json.dumps(jsonify), file=file)
@@ -377,12 +391,13 @@ class StressDB:
             except Exception as exp:
                 if exp.args[0] != 'Page not found' and exp.args[0] != 'Timeout':
                     raise
-                print(exp.args[0])
+                #print(exp.args[0])
                 self.articles[objhash] = None
 
         table = self.articles[objhash]
+        print("find_formstress...", flush=True)
         form = find_formstress(parse, table)
-
+        print("got it", flush=True)
         return form
 
     def __len__(self):
@@ -391,10 +406,16 @@ class StressDB:
 
 if __name__ == "__main__":
     import pymorphy2 as py
-    db = StressDB("stressdb.json")
+    if "stressdb.json" in os.listdir("."):
+        db = StressDB("stressdb.json")
+        assert(len(db) >= 7)
+    else:
+        db = StressDB()
+    print(len(db))
+    print("LENGTH")
     morph = py.MorphAnalyzer()
 
-    '''with open("out.txt", encoding="utf-8") as file:
+    with open("out.txt", encoding="utf-8") as file:
         words = set()
         word = ""
         for el in file.read() + "#":
@@ -405,16 +426,23 @@ if __name__ == "__main__":
                     words.add(word.lower())
                     word = ""
         for word in words:
+            print("word:", word, flush=True)
             print(word, db.get_stress(morph.parse(word)[0]))
-            if len(db) % 100 == 0:
+            if len(db) % 300 == 0:
+                print(len(db))
+                print("SAVED")
                 db.save("db-stress-" + str(len(db)) + ".txt")
-                db.save("stressdb.txt")'''
+                db.save("stressdb.json")
+                db = StressDB('stressdb.json')
+                sleep(60)
+                print("COMPLEATED")
+                #break
     
-    while True:
+    '''while True:
         word = input()
         if word == 'save':
             db.save(input())
         elif word == 'load':
             db.load(input())
         else:
-            print(db.get_stress(morph.parse(word)[0]))
+            print(db.get_stress(morph.parse(word)[0]))'''
