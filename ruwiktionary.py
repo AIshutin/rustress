@@ -167,7 +167,7 @@ class StressDB:
 	       	try:
 	       		res = find_formstress(get_stress(parse))
 	       	except Exception as exp:
-	       		if exp.args[0] != 'Page not found':
+	       		if exp.args[0] != 'Page is not found':
 	       			raise
 	       		print(exp)
 	       		return not_found
@@ -189,7 +189,7 @@ def get_stress(word):
     """
 
     if "LATN" in word.tag:
-        raise Exception("Page not found")
+        raise Exception("Page is not found")
 
     url = "https://ru.wiktionary.org/wiki/"
     normal = word.normal_form
@@ -203,16 +203,16 @@ def get_stress(word):
         if normal[-1] in endings:
             normal = normal[:-1]
         normal += 'ный'
-    print(normal, word.tag, flush=True)
+    #print(normal, word.tag, flush=True)
     #try:
-    print("SENT", flush=True)
+    #print("SENT", flush=True)
     resp = rq.get(url + normal)
-    print("GOT", flush=True)
-    print(resp.status_code, flush=True)
+    #print("GOT", flush=True)
+    #print(resp.status_code, flush=True)
     #except:
     #    raise Exception("Timeout")
     if (resp.status_code != 200):
-        raise Exception("Page not found")
+        raise Exception("Page is not found")
     bs = bs4.BeautifulSoup(resp.text, 'html.parser')
     return get_essences(bs, normal)
 
@@ -275,7 +275,7 @@ if __name__ == "__main__":
     print("LENGTH")
     morph = py.MorphAnalyzer()
 
-    with open("out.txt", encoding="utf-8") as file:
+    with open("war.txt", encoding="utf-8") as file:
         words = set()
         word = ""
         for el in file.read() + "#":
@@ -285,21 +285,26 @@ if __name__ == "__main__":
                 if len(word) != 0:
                     words.add(word.lower())
                     word = ""
-        last = len(db)
+        last = 0
+        words = list(words)
+        rd.shuffle(words)
+        words = set(words)
         for word in words:
             try:
-                print("word:", word, flush=True)
-                print(word, db.get_stress(morph.parse(word)[0]))
-                if (len(db) - last) % 400 == 0 and len(db) != last:
+                print("word:", word)
+                prev = len(db)
+                print(db.get_stress(morph.parse(word)[0]), len(db))
+                last += prev != len(db)
+                if last % 1000 == 0 and last != 0 and len(db) != last:
                     print("SAVED", len(db))
                     db.save("db-stress-" + str(len(db)) + ".txt")
                     db.save("stressdb.json")
                     db = StressDB('stressdb.json')
-                    last = len(db)
+                    last = 0
                     sleep(60)
                     print("COMPLEATED")
-                    #break
             except Exception as exp:
+                print("word:", word)
                 print("!!!!!!!!!!!!!!!!!!!!!!")
                 print(exp)
                 print()
@@ -308,3 +313,4 @@ if __name__ == "__main__":
                 last = len(db)
                 sleep(180)
                 print("continued")
+
