@@ -12,20 +12,28 @@ feat = ['aspect', 'case', 'POS', 'mood', 'gender', 'number', 'person', 'tense', 
 
 def prepare_data(key):
     key = key.replace('ѝ', 'й')[::-1]
+    val = val.replace('ѝ', 'й')[::-1]
     word = morph.parse(key)[0]
-    row = [0] * (MAX_LENGTH + len(feat))
+    row = np.zeros(MAX_LENGTH * len(chars) + sum(cnts), dtype=np.bool)
+    curr = 0
     for i in range(len(feat)):
+        #print('word.tag.' + feat[i])
+        #print(word.tag.aspect)
         try:
-            row[i] = cnt[i][eval('word.tag.' + feat[i])] / len(cnt[i])
+            row[curr + feat2id[eval('word.tag.' + feat[i])]] = 1
         except:
             pass
+        curr += cnts[i]
     for i in range(len(key)):
-        row[len(feat) + i] = c2id[key[i]] / len(c2id)
-    return np.array(row)
+        row[curr + c2id[key[i]] - 1] = 1
+        curr += len(chars)
+    return row
 
 model = keras.models.load_model('model.h5')
 c2id = json.loads(open('c2id.json', encoding='utf-8').read())
-cnt = json.loads(open('back.json').read())
+feat2id = json.loads(open('back.json').read())
+cnts = [len(feat2id[i]) for i in range(len(feat))]
+
 vow = 'уеыаоэяиюё'
 
 def predict_stress(data):
