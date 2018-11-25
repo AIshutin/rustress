@@ -1,0 +1,8 @@
+README.md
+setup.cfg
+setup.py
+rustress.egg-info/PKG-INFO
+rustress.egg-info/SOURCES.txt
+rustress.egg-info/dependency_links.txt
+rustress.egg-info/requires.txt
+rustress.egg-info/top_level.txt

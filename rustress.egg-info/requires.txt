@@ -1,0 +1,5 @@
+bs4
+keras
+pymorphy2
+requests
+tensorflow
