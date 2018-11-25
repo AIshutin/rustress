@@ -9,12 +9,12 @@ stress_char = "ре́с"[2]
 
 MAX_LENGTH = 26
 feat = ['aspect', 'case', 'POS', 'mood', 'gender', 'number', 'person', 'tense', 'voice', 'transitivity']
+chars_ln = 57
 
 def prepare_data(key):
     key = key.replace('ѝ', 'й')[::-1]
-    val = val.replace('ѝ', 'й')[::-1]
     word = morph.parse(key)[0]
-    row = np.zeros(MAX_LENGTH * len(chars) + sum(cnts), dtype=np.bool)
+    row = np.zeros(MAX_LENGTH * chars_ln + sum(cnts), dtype=np.bool)
     curr = 0
     for i in range(len(feat)):
         #print('word.tag.' + feat[i])
@@ -26,13 +26,14 @@ def prepare_data(key):
         curr += cnts[i]
     for i in range(len(key)):
         row[curr + c2id[key[i]] - 1] = 1
-        curr += len(chars)
+        curr += chars_ln
     return row
 
 model = keras.models.load_model('model.h5')
 c2id = json.loads(open('c2id.json', encoding='utf-8').read())
 feat2id = json.loads(open('back.json').read())
 cnts = [len(feat2id[i]) for i in range(len(feat))]
+
 
 vow = 'уеыаоэяиюё'
 
@@ -51,19 +52,24 @@ def predict_stress(data):
 		pos = 0
 		ok = False
 		for c in data[ind]:
-			if c in vow:
-				cnt += 1
-				if c == 'ё':
-					pos = cnt - 1
-					ok = True
-					break
+			cnt += 1
+			if c == 'ё':
+				pos = cnt - 1 
+				ok = True
+				break
 		if ok:
 			res.append(pos)
 			continue
-		print(el)
+		#print(el)
+		vow_pos = 0
 		for i in range(cnt):
+			if data[ind][-i - 1] in vow:
+				vow_pos = cnt - i - 1
 			if el[i] > el[pos]:
 				pos = i
+		if data[ind][cnt - pos - 1] not in vow:
+			res.append(vow_pos)
+			continue
 		res.append(cnt - pos - 1)
 		ind += 1
 	return res
