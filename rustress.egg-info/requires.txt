@@ -1,5 +1,5 @@
-bs4
-keras
-pymorphy2
-requests
-tensorflow
+bs4==0.0.1
+keras==2.2.4
+pymorphy2==0.8
+requests==2.20.1
+tensorflow==1.12.0
