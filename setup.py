@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 setup is the main function that describes all the package
 """
 
-version = "1.3.8"
+version = "1.3.9"
 
 setup(
     name='rustress',

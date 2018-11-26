@@ -1,12 +1,9 @@
 MANIFEST.in
 README.md
-__init__.py
-back.json
-c2id.json
-model.h5
 ruwiktionary.py
 setup.cfg
 setup.py
+rustress/__init__.py
 rustress.egg-info/PKG-INFO
 rustress.egg-info/SOURCES.txt
 rustress.egg-info/dependency_links.txt
