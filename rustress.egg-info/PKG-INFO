@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: rustress
-Version: 1.3.6
+Version: 1.3.7
 Summary: A tiny module for offline stress detection in russian words.
 Home-page: https://github.com/aishutin/rustress
 Author: aishutin
 Author-email: hazmozavr@gmail.com
 License: MIT
-Download-URL: https://github.com/aishutin/rustress/archive/1.3.6.tar.gz
+Download-URL: https://github.com/aishutin/rustress/archive/1.3.7.tar.gz
 Description: # rustress
         
         rustress is a tiny module for predicting stress in russian words. Grabbed data from ruwiktionary, parser script, jupyter notebook with model creation are avaible on [github.com](https://github.com/AIshutin/rustress).

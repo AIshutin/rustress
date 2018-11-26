@@ -1,4 +1,10 @@
+MANIFEST.in
 README.md
+__init__.py
+back.json
+c2id.json
+model.h5
+ruwiktionary.py
 setup.cfg
 setup.py
 rustress.egg-info/PKG-INFO
