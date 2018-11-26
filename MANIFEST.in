@@ -1,0 +1,3 @@
+include c2id.json
+include back.json
+include model.h5
