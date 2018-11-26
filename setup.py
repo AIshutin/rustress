@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 setup is the main function that describes all the package
 """
 
-version = "1.3.9"
+version = "1.3.10"
 
 setup(
     name='rustress',
@@ -31,6 +31,7 @@ setup(
     ],
     download_url='https://github.com/aishutin/rustress/archive/{}.tar.gz'.format(version),
     keywords=['ru', 'stress', 'rustress', 'poetry', 'linguistic', 'python'],
+    data_files=['rustress/back.json', 'rustress/c2id.json', 'rustress/model.h5'],
     include_package_data=True,
     install_requires=['pymorphy2==0.8', 'tensorflow==1.12.0', 'keras==2.2.4']
 )
