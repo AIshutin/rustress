@@ -14,6 +14,5 @@ setup(
     url='https://github.com/aishutin/rustress',
     download_url='https://github.com/aishutin/rustress/archive/1.3.0.tar.gz',
     keywords=['ru', 'stress', 'rustress', 'poetry', 'linguistic', 'python'],
-    scripts=[],
     install_requires=['requests==2.20.1', 'bs4==0.0.1', 'pymorphy2==0.8', 'tensorflow==1.12.0', 'keras==2.2.4']
 )

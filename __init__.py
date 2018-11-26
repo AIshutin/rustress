@@ -1,2 +1,2 @@
-from .predictor import predict_data
-from .wiktionary import StressDB
+from rustress.predictor import predict_data
+from rustress.wiktionary import StressDB
