@@ -10,10 +10,13 @@ README = (HERE / "README.md").read_text()
 """
 setup is the main function that describes all the package
 """
+
+version = "1.3.6"
+
 setup(
     name='rustress',
     packages=find_packages(exclude=['stressdb.json', 'stressdb.zip', 'Model_creation.h5']),
-    version=str(__version__),
+    version=version,
     description='A tiny module for offline stress detection in russian words.',
     author='aishutin',
     long_description=README,
@@ -26,7 +29,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
     ],
-    download_url='https://github.com/aishutin/rustress/archive/{}.tar.gz' % __version__,
+    download_url='https://github.com/aishutin/rustress/archive/{}.tar.gz'.format(version),
     keywords=['ru', 'stress', 'rustress', 'poetry', 'linguistic', 'python'],
     include_package_data=True,
     install_requires=['requests==2.20.1', 'bs4==0.0.1', 'pymorphy2==0.8', 'tensorflow==1.12.0', 'keras==2.2.4']

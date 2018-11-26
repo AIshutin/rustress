@@ -1,12 +1,27 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: rustress
-Version: 1.3.0
+Version: 1.3.6
 Summary: A tiny module for offline stress detection in russian words.
 Home-page: https://github.com/aishutin/rustress
 Author: aishutin
 Author-email: hazmozavr@gmail.com
-License: UNKNOWN
-Download-URL: https://github.com/aishutin/rustress/archive/1.3.0.tar.gz
-Description: UNKNOWN
+License: MIT
+Download-URL: https://github.com/aishutin/rustress/archive/1.3.6.tar.gz
+Description: # rustress
+        
+        rustress is a tiny module for predicting stress in russian words. Grabbed data from ruwiktionary, parser script, jupyter notebook with model creation are avaible on [github.com](https://github.com/AIshutin/rustress).
+        
+        You can predict stress with using predict_stress in predictor.py
+        
+        Example:
+        
+        ```
+        from rustress import predict_stress
+        print(predict_stress([input()]))
+        ```
 Keywords: ru,stress,rustress,poetry,linguistic,python
 Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown
