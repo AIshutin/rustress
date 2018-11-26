@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+import pathlib
 import keras
 import numpy as np
 import json
@@ -28,9 +28,10 @@ def prepare_data(key):
         curr += chars_ln
     return row
 
-model = keras.models.load_model('model.h5')
-c2id = json.loads(open('c2id.json', encoding='utf-8').read())
-feat2id = json.loads(open('back.json').read())
+path = pathlib.Path(__file__).parent
+model = keras.models.load_model(str(path / 'model.h5'))
+c2id = json.loads(open(str(path / 'c2id.json'), encoding='utf-8').read())
+feat2id = json.loads(open(str(path / 'back.json')).read())
 cnts = [len(feat2id[i]) for i in range(len(feat))]
 
 
