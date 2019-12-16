@@ -33,5 +33,5 @@ setup(
     keywords=['ru', 'stress', 'rustress', 'poetry', 'linguistic', 'python'],
     data_files=['rustress/back.json', 'rustress/c2id.json', 'rustress/model.h5'],
     include_package_data=True,
-    install_requires=['pymorphy2==0.8', 'tensorflow==1.12.2', 'keras==2.2.4']
+    install_requires=['pymorphy2==0.8', 'tensorflow==1.15.0', 'keras==2.2.4']
 )
